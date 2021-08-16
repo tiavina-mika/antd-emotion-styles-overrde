@@ -1,34 +1,44 @@
 /** @jsxRuntime classic /
 /* @jsx jsx */
 import { cx } from "@emotion/css";
-import { jsx } from "@emotion/react";
+import { jsx, useTheme } from "@emotion/react";
+import { css } from "@emotion/css";
 
 const classes = {
-  box: (theme) => ({
-    backgroundColor: theme.colors.primary
-  }),
-  text: {
+  box: (theme) =>
+    css({
+      backgroundColor: theme.colors.primary
+    }),
+  text: css({
     fontSize: 18,
     color: "#fff"
-  },
-  rectangle: {
+  }),
+  rectangle: css({
     width: 500,
     height: 300
-  },
-  square: {
+  }),
+  square: css({
     width: 300,
     height: 300
-  },
-  override: {
-    backgroundColor: "blue"
-  }
+  }),
+  override: css({
+    backgroundColor: "red"
+  })
 };
 
-const Box = ({ children, type = "square", styles, className }) => {
+const Box = ({ children, type = "square", className, otherClassName }) => {
+  const theme = useTheme();
+
   return (
     <div
-      css={[classes.box, classes.text, classes[type], styles]}
-      className={cx("flexCenter", className)}
+      className={cx(
+        "flexCenter",
+        classes.box(theme),
+        classes.text,
+        className,
+        classes[type],
+        otherClassName
+      )}
     >
       {children}
     </div>
@@ -36,11 +46,7 @@ const Box = ({ children, type = "square", styles, className }) => {
 };
 
 const Demo = () => {
-  return (
-    <Box styles={classes.override} className="justifyStart">
-      Some text
-    </Box>
-  );
+  return <Box className={cx("justifyStart", classes.override)}>Some text</Box>;
 };
 
 export default Demo;
