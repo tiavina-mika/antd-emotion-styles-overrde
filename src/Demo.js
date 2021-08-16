@@ -21,9 +21,9 @@ const classes = {
     width: 300,
     height: 300
   }),
-  override: css({
+  override: {
     backgroundColor: "red"
-  })
+  }
 };
 
 const Box = ({ children, type = "square", className, otherClassName }) => {
@@ -46,7 +46,11 @@ const Box = ({ children, type = "square", className, otherClassName }) => {
 };
 
 const Demo = () => {
-  return <Box className={cx("justifyStart", classes.override)}>Some text</Box>;
+  return (
+    <Box css={classes.override} className={"justifyStart"}>
+      Some text
+    </Box>
+  );
 };
 
 export default Demo;
