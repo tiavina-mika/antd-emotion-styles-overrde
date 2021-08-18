@@ -3,6 +3,9 @@
 import { cx } from "@emotion/css";
 import { jsx } from "@emotion/react";
 import { css } from "@emotion/css";
+import { useState } from "react";
+import ShapeChoice from "./ShapeChoice";
+import OverrideButton from "./OverrideButton";
 
 const classes = {
   box: (theme) => ({
@@ -27,14 +30,17 @@ const classes = {
   },
   override: {
     backgroundColor: "red"
+  },
+  overrideButton: {
+    marginTop: 20
   }
 };
 
-const Box = ({ children, type = "square", className, otherClassName }) => {
+const Box = ({ children, type, className, otherClassName }) => {
   return (
     <div
       css={[classes[type], classes.box, classes.text]}
-      className={cx("flexCenter", className, otherClassName)}
+      className={cx("justifyStart", className, otherClassName)}
     >
       {children}
     </div>
@@ -42,16 +48,34 @@ const Box = ({ children, type = "square", className, otherClassName }) => {
 };
 
 const Demo = () => {
+  const [shape, setShape] = useState("square");
+  const [override, setOverride] = useState(false);
+
+  const handleShapeChange = (e) => setShape(e.target.value);
+  const handleOverrideChange = (e) => setOverride(e.target.value);
+
   return (
-    // the css props will be transformed by default to a className
-    // so no need to declare it as a props
-    <Box
-      css={classes.override}
-      className="justifyStart"
-      otherClassName={css({ fontStyle: "italic" })}
-    >
-      Some text
-    </Box>
+    <div className="flexCenter flex1">
+      {/* // the css props will be transformed by default to a className
+      // so no need to declare it as a props */}
+      <Box
+        css={override && classes.override}
+        className="flexCenter"
+        otherClassName={css({ fontStyle: "italic" })}
+        type={shape}
+      >
+        {shape}
+      </Box>
+
+      {/* buttons */}
+      <div className="m-t-25 flexCenter">
+        <ShapeChoice onChange={handleShapeChange} />
+        <OverrideButton
+          onChange={handleOverrideChange}
+          css={classes.overrideButton}
+        />
+      </div>
+    </div>
   );
 };
 
